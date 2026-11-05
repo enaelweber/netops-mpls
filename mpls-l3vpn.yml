@@ -1,0 +1,53 @@
+name: mpls-l3vpn
+
+topology:
+  kinds:
+    ceos:
+      image: ceos:4.36.1F
+    linux:
+      image: ghcr.io/srl-labs/network-multitool:latest
+
+  nodes:
+    p1:
+      kind: ceos
+    p2:
+      kind: ceos
+    pe-par:
+      kind: ceos
+    pe-avi:
+      kind: ceos
+    pe-bor:
+      kind: ceos
+    ce-a-par:
+      kind: ceos
+    ce-a-avi:
+      kind: ceos
+    ce-b-par:
+      kind: ceos
+    ce-b-bor:
+      kind: ceos
+    h-a-par:
+      kind: linux
+    h-a-avi:
+      kind: linux
+    h-b-par:
+      kind: linux
+    h-b-bor:
+      kind: linux
+
+  links:
+    # coeur
+    - endpoints: ["p1:eth1", "p2:eth1"]
+    - endpoints: ["p1:eth2", "pe-par:eth1"]
+    - endpoints: ["p2:eth2", "pe-avi:eth1"]
+    - endpoints: ["p2:eth3", "pe-bor:eth1"]
+    # pe-ce
+    - endpoints: ["pe-par:eth2", "ce-a-par:eth1"]
+    - endpoints: ["pe-par:eth3", "ce-b-par:eth1"]
+    - endpoints: ["pe-avi:eth2", "ce-a-avi:eth1"]
+    - endpoints: ["pe-bor:eth2", "ce-b-bor:eth1"]
+    # lans
+    - endpoints: ["ce-a-par:eth2", "h-a-par:eth1"]
+    - endpoints: ["ce-a-avi:eth2", "h-a-avi:eth1"]
+    - endpoints: ["ce-b-par:eth2", "h-b-par:eth1"]
+    - endpoints: ["ce-b-bor:eth2", "h-b-bor:eth1"]
