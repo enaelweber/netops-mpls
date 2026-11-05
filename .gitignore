@@ -2,3 +2,4 @@ clab-*/
 *.retry
 __pycache__/
 *.tar
+*.annotations.json
